@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "27L9UVw2TtUosnEBKcAzhCgDWuMkubWN4d3mWn2ERr285867Eg+wzMMgSd24TQgQLpBZIKIK9IqmvDcwH0Rjjw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\achar\\source\\repos\\CodeDocumentationTool\\CodeDocumentationTool\\CodeDocumentationTool.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\achar\\.nuget\\packages\\microsoft.netcore.platforms\\1.1.0\\microsoft.netcore.platforms.1.1.0.nupkg.sha512",
+    "C:\\Users\\achar\\.nuget\\packages\\netstandard.library\\2.0.3\\netstandard.library.2.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
