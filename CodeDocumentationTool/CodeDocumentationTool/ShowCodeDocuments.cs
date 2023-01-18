@@ -9,31 +9,82 @@ namespace CodeDocumentationTool
 {
     public class ShowCodeDocuments
     {
+
         public void GetDocs()
         {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (var assembly in assemblies)
+            var assemblyData = Assembly.GetExecutingAssembly();
+
+            Console.WriteLine(assemblyData);
+            var typeData = assemblyData.GetTypes();
+
+
+
+            foreach (Type type in typeData)
             {
+                var attributeData = type.GetCustomAttributes(typeof(DocumentAttribute), true);
+
+                if (attributeData.Length > 0)
                 {
-                    var types = assembly.GetTypes();
-                    foreach (var type in types)
+                    if (type.IsClass)
                     {
-                        var members = type.GetMembers();
-                        foreach (var member in members)
+                        Console.WriteLine($"Class: {type.Name}");
+                        Console.WriteLine($"\tDescription: {((DocumentAttribute)attributeData[0]).Description}\n");
+       
+
+
+                        foreach (ConstructorInfo constructor in type.GetConstructors())
                         {
-                            var attributes = member.GetCustomAttributes(typeof(DocumentAttribute), false);
-                            if (attributes.Length > 0)
-
+                            var constructorAttributes = constructor.GetCustomAttributes(typeof(DocumentAttribute), true);
+                            if (constructorAttributes.Length > 0)
                             {
-
-                                Console.WriteLine($"Type: {member.MemberType}");
-                                Console.WriteLine($"Name: {member.Name}");
-                                Console.WriteLine($"Description: {((DocumentAttribute)attributes[0]).Description}");
-                                Console.WriteLine($"Input: {((DocumentAttribute)attributes[0]).Input}");
-                                Console.WriteLine($"Output: {((DocumentAttribute)attributes[0]).Output}\n");
+                                Console.WriteLine($"Constructor: {constructor.Name}");
+                                
+                                Console.WriteLine($"\tDescription:{((DocumentAttribute)constructorAttributes[0]).Description}");
+                                Console.WriteLine($"\tInput:{((DocumentAttribute)constructorAttributes[0]).Input}\n");
                             }
                         }
+
+                        foreach (MethodInfo method in type.GetMethods())
+                        {
+                            var methodAttributes = method.GetCustomAttributes(typeof(DocumentAttribute), true);
+                            if (methodAttributes.Length > 0)
+                            {
+                                Console.WriteLine($"Method:{method.Name}\n");
+                                Console.WriteLine($"\tDescription: {((DocumentAttribute)methodAttributes[0]).Description}");
+                                Console.WriteLine($"\tInput:{((DocumentAttribute)methodAttributes[0]).Input}");
+                                Console.WriteLine($"\tOutput:{((DocumentAttribute)methodAttributes[0]).Output}\n");
+                      
+                            }
+                        }
+
+                        foreach (PropertyInfo property in type.GetProperties())
+                        {
+                            var propertyAttributes = property.GetCustomAttributes(typeof(DocumentAttribute), true);
+                            if (propertyAttributes.Length > 0)
+                            {
+                                Console.WriteLine($"Property:{property.Name}");
+                                Console.WriteLine($"\tDescription:{((DocumentAttribute)propertyAttributes[0]).Description}");
+                                Console.WriteLine($"\tOutput:{((DocumentAttribute)propertyAttributes[0]).Output}\n");
+                  
+                            }
+                        }
+
                     }
+
+                    if (type.IsEnum)
+                    {
+                        Console.WriteLine($"Enum: {type.Name}");
+                        Console.WriteLine($"\tDescription: {((DocumentAttribute)attributeData.SingleOrDefault(a => a.GetType() == typeof(DocumentAttribute)))?.Description}\n");
+
+                        string[] names = type.GetEnumNames();
+                        foreach (string name in names)
+                        {
+                            Console.WriteLine(name);
+
+                        }
+            
+                    }
+
                 }
             }
         }
