@@ -30,7 +30,7 @@ namespace CodeDocumentationTool
 
 
         [Document(Description = "Female software developers in Genesys")]
-        class FemaleDevelopers
+        public class FemaleDevelopers
         {
             [Document(Description = "This assigns value to the Name field",
             Input = "This is a field which is the Name of female software developers and the data type is  string")]
