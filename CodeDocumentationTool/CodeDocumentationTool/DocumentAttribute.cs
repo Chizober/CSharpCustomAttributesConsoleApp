@@ -39,11 +39,11 @@ namespace CodeDocumentationTool
                 Name = name;
             }
             [Document(Description = "This is a property, it sets and gets  the names of the software developers")] public string Name { get; set; }
-            [Document(Description = "This is also a property, it sets and gets  their departments")] public string Department { get; set; }
-            [Document(Description = "This describes what happens in each department", Input = "It takes a string department", Output = "It returns their department")]
-            public string SampleCode(string department, string name)
+            [Document(Description = "This is also a property, it sets and gets  their Contacts")] public string Contact { get; set; }
+            [Document(Description = "This describes what happens in each department", Input = "It takes a string name", Output = "It brings out the output")]
+            public string SampleCode(string name)
             {
-                return name + " is a member of " + Departments.OS;
+                return name;
 
             }
 
