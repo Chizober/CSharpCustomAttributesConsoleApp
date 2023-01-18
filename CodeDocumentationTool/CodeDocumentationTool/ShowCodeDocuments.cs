@@ -26,10 +26,11 @@ namespace CodeDocumentationTool
 
                             {
 
-                                Console.WriteLine("Type: {0}", member.MemberType);
-                                Console.WriteLine("Name: {0}", member.Name);
+                                Console.WriteLine($"Type: {member.MemberType}");
+                                Console.WriteLine($"Name: {member.Name}");
                                 Console.WriteLine($"Description: {((DocumentAttribute)attributes[0]).Description}");
-                                Console.WriteLine();
+                                Console.WriteLine($"Input: {((DocumentAttribute)attributes[0]).Input}");
+                                Console.WriteLine($"Output: {((DocumentAttribute)attributes[0]).Output}\n");
                             }
                         }
                     }
