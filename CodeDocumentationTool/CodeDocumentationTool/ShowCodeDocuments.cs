@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -8,73 +9,32 @@ namespace CodeDocumentationTool
 {
     public class ShowCodeDocuments
     {
-
-
-            public static void GetMethods(Type type)
+        public void GetDocs()
+        {
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in assemblies)
             {
-
-
-                MethodInfo[] fetchmethodInfo = type.GetMethods();
-                for (int i = 0; i < fetchmethodInfo.GetLength(0); i++)
                 {
-                    object[] methinfo = fetchmethodInfo[i].GetCustomAttributes(true);
-
-                    foreach (Attribute doc in fetchmethodInfo.Cast<Attribute>())
+                    var types = assembly.GetTypes();
+                    foreach (var type in types)
                     {
-                        if (doc is DocumentAttribute)
+                        var members = type.GetMembers();
+                        foreach (var member in members)
                         {
-                            DocumentAttribute attribute = (DocumentAttribute)doc;
+                            var attributes = member.GetCustomAttributes(typeof(DocumentAttribute), false);
+                            if (attributes.Length > 0)
 
-                            Console.WriteLine(attribute.Description);
+                            {
+
+                                Console.WriteLine("Type: {0}", member.MemberType);
+                                Console.WriteLine("Name: {0}", member.Name);
+                                Console.WriteLine($"Description: {((DocumentAttribute)attributes[0]).Description}");
+                                Console.WriteLine();
+                            }
                         }
                     }
                 }
             }
-            public static void GetClass(Type type)
-            {
-                Console.WriteLine("Assembly: {0}", Assembly.GetExecutingAssembly());
-                object[] fetchclassInfo = type.GetCustomAttributes(true);
-                foreach (object attr in fetchclassInfo)
-                {
-                    if (attr is DocumentAttribute)
-                    {
-                        DocumentAttribute attribute = (DocumentAttribute)attr;
-
-                        Console.WriteLine($"{attribute.Description} {attribute.Input}");
-                    }
-                }
-
-            }
-            public static void GetProps(Type type)
-            {
-                PropertyInfo[] fetchpropinfo = type.GetProperties();
-                for (int i = 0; i < fetchpropinfo.Length; i++)
-                {
-                    object[] prop = fetchpropinfo[i].GetCustomAttributes(true);
-
-                    foreach (Attribute props in prop.Cast<Attribute>())
-                    {
-                        if (props is DocumentAttribute)
-                        {
-                            DocumentAttribute attribute = (DocumentAttribute)props;
-
-                            Console.WriteLine(attribute.Description);
-                        }
-                    }
-
-                }
-
-            }
-            public static void GetDocs(Type type)
-            {
-                GetClass(type);
-                GetMethods(type);
-                GetProps(type);
-            }
-
-
-
-           
         }
     }
-
+}
