@@ -1,21 +1,40 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Reflection;
-using CodeDocumentationTool;
+using System.Text;
 
-namespace DocumentTestTool
+namespace CodeDocumentationTool
 {
-    internal class Program
+    public class ShowCodeDocuments
     {
-
-        static void Main(string[] args)
+        public void GetDocs()
         {
-            ShowCodeDocuments.GetDocs(typeof(Enum));
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            foreach (var assembly in assemblies)
+            {
+                {
+                    var types = assembly.GetTypes();
+                    foreach (var type in types)
+                    {
+                        var members = type.GetMembers();
+                        foreach (var member in members)
+                        {
+                            var attributes = member.GetCustomAttributes(typeof(DocumentAttribute), false);
+                            if (attributes.Length > 0)
 
-            Console.WriteLine(sam.SampleMethod("stanley"));
+                            {
 
-            ShowCodeDocuments codedocs = new ShowCodeDocuments();
-
-            Console.WriteLine(codedocs)
+                                Console.WriteLine("Type: {0}", member.MemberType);
+                                Console.WriteLine("Name: {0}", member.Name);
+                                Console.WriteLine($"Description: {((DocumentAttribute)attributes[0]).Description}");
+                                Console.WriteLine();
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
